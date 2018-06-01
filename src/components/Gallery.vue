@@ -2,11 +2,19 @@
   <div class="container">
     <Loader v-show="!imagesLoaded"/>
     <div class="card-columns" :key="category">
-      <div v-for="(image, index) in images" :key="index" class="card">
+      <div v-for="(image, index) in images" :key="index" class="card" @click="openPopup(index, image.url)">
         <thumbnail :src="image.url" class="card-img-top" @loaded="imageLoaded(index)"/>
       </div>
     </div>
     <button @click="loadMore()" type="button" class="btn btn-primary">More</button>
+    <div v-if="popUp.active" class="big-photo">
+      <button @click="closePopup">
+        X
+      </button>
+      <button @click="navigate(false)">Prev</button>
+      <button @click="navigate(true)">Next</button>
+      <img :src="popUp.url">
+    </div>
   </div>
 </template>
 
@@ -21,23 +29,44 @@ export default {
   data() {
     return {
       perPage: 20,
-      images: []
+      images: [],
+      popUp: {
+        index: 0,
+        active: false,
+        url: ''
+      }
     };
   },
   methods: {
     getImagesUrls(perPage) {
       for (var i = 0; i <= perPage; i++) {
         this.images.push({
-          url: `https://loremflickr.com/640/${this.getRandomHeight()}/${this.category}`,
+          url: `https://loremflickr.com/1280/${this.getRandomHeight()}/${this.category}`,
           loaded: false
         });
       }
     },
     getRandomHeight() {
-      return Math.floor(Math.random() * 620) + 240;
+      return Math.floor(Math.random() * 720) + 400;
     },
     loadMore() {
       this.getImagesUrls(20);
+    },
+    openPopup(index, url) {
+      this.popUp.index = index
+      this.popUp.active = true
+      this.popUp.url = url
+    },
+    closePopup() {
+      this.popUp.active = false
+    },
+    navigate(next) {
+      if(next) {
+        this.popUp.index = this.popUp.index + 1
+      } else {
+        this.popUp.index = this.popUp.index - 1
+      }
+      this.popUp.url = this.images[this.popUp.index].url
     }
   },
   computed: {
@@ -51,5 +80,11 @@ export default {
 };
 </script>
 
-<style lang="scss">
+<style lang="scss" scoped>
+.big-photo {
+  position: fixed;
+  top: 50%;
+  left: 50%;
+  transform: translateX(-50%) translateY(-50%);
+}
 </style>
