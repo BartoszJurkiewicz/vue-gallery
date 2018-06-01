@@ -11,8 +11,8 @@
       <button @click="closePopup">
         X
       </button>
-      <button @click="navigate(false)">Prev</button>
-      <button @click="navigate(true)">Next</button>
+      <button @click="navigate(popUp.index - 1)">Prev</button>
+      <button @click="navigate(popUp.index + 1)">Next</button>
       <img :src="popUp.url">
     </div>
   </div>
@@ -60,13 +60,10 @@ export default {
     closePopup() {
       this.popUp.active = false
     },
-    navigate(next) {
-      if(next) {
-        this.popUp.index = this.popUp.index + 1
-      } else {
-        this.popUp.index = this.popUp.index - 1
-      }
-      this.popUp.url = this.images[this.popUp.index].url
+    navigate(index) {
+      console.log(index)
+      this.popUp.index = index
+      this.popUp.url = this.images[index].url
     }
   },
   computed: {
