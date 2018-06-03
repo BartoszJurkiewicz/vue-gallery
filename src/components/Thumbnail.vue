@@ -1,7 +1,7 @@
 <template>
   <div class="thumb-container" :class="[loading, canAnimate?'animate':'']">
     <img ref="thumbnail" :src="src" class="thumbnail" :style="`animation-delay: ${(index % perPage) / 10}s`">
-    <div v-if="slot" class="caption">
+    <div v-if="defaultSlot" class="caption">
       <slot></slot>
     </div>
   </div>
@@ -18,7 +18,7 @@ export default {
     };
   },
   computed: {
-    slot() {
+    defaultSlot() {
       return this.$slots.default
     }
   },

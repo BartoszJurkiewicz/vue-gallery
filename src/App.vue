@@ -16,6 +16,11 @@ export default {
 body {
   font-family: 'Lato', sans-serif;
 }
+a {
+  &:hover {
+    text-decoration: none;
+  }
+}
 .container-fluid {
   padding-top: 15px;
   padding-left: 30px;
