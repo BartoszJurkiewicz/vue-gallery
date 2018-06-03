@@ -1,6 +1,6 @@
 <template>
-  <div class="thumb-container" :class="{loading, 'animate':canAnimate}" :style="`animation-delay: ${(index % perPage) / 10}s`">
-    <img ref="thumbnail" :src="src" class="thumbnail">
+  <div class="thumb-container" :class="[loading, canAnimate?'animate':'']">
+    <img ref="thumbnail" :src="src" class="thumbnail" :style="`animation-delay: ${(index % perPage) / 10}s`">
     <div v-if="slot" class="caption">
       <slot></slot>
     </div>
@@ -34,29 +34,40 @@ export default {
 <style lang="scss" scoped>
 .thumb-container {
   position: relative;
-  overflow-y: hidden;
+  display: flex;
+  align-items: center;
+  justify-content: center;
   margin-bottom: 30px;
+  padding-bottom: 100%;
   box-shadow: 6px 6px 20px 0px rgba(0,0,0,0.25);
+  transition: transform .4s;
+  overflow: hidden;
+  background: lightgray;
+}
+.thumbnail {
+  position: absolute;
+  height: 100%;
+  max-width: initial;
+  top: 0;
+  opacity: 0;
+  visibility: hidden;
+}
+.animate {
   &:hover {
+    transform: scale(1.02);
     .caption {
       transform: translateY(0)
     }
   }
-}
-.thumbnail {
-  position: relative;
-  top: 0;
-  left: 0;
-  z-index: 9;
-}
-.loading {
-  opacity: 0;
-  visibility: none;
-}
-.animate {
-  animation-name: fadeIn;
-  animation-duration: .4s;
-  animation-fill-mode: forwards;
+  .thumbnail{
+    animation-name: fadeIn;
+    animation-duration: .4s;
+    animation-fill-mode: forwards;
+  }
+  .caption {
+    opacity: 1;
+    visibility: visible
+  }
 }
 .caption {
   position: absolute;
@@ -71,12 +82,17 @@ export default {
   transform: translateY(100%);
   transition: transform .4s;
   text-align: center;
-  font-size: 20px;
+  font-size: 60px;
   color: initial;
   z-index: 9;
+  opacity: 0;
+  visibility: hidden;
 }
 .gallery {
-  overflow-y: visible;
+  overflow: visible;
+  .thumbnail {
+    z-index: 1;
+  }
   .thumbnail, &:before, &:after {
     transition: .4s cubic-bezier(0.175, 0.885, 0.320, 1.275);
   }
@@ -91,9 +107,7 @@ export default {
   }
   &:hover {
     .thumbnail {
-      position: relative;
-      top: 14px;
-      left: 14px;
+      transform: translateX(14px) translateY(14px)
     }
     &:after {
       transform: translateX(7px) translateY(7px)
