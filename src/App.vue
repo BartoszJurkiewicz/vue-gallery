@@ -13,6 +13,14 @@ export default {
 </script>
 
 <style lang="scss">
+body {
+  font-family: 'Lato', sans-serif;
+}
+.container-fluid {
+  padding-top: 15px;
+  padding-left: 30px;
+  padding-right: 30px;
+}
 .fade-enter-active,
 .fade-leave-active {
   transition: opacity 0.3s;
