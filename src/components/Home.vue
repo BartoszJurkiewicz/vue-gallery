@@ -1,9 +1,11 @@
 <template>
   <div class="row">
-    <Loader v-show="!imagesLoaded"/>
-    <div v-for="(image, index) in images" :key="index" class="col">
+    <Loader :progress="progress"/>
+    <div v-for="(image, index) in images" :key="index" class="col-12 col-sm-6 col-md-3">
       <router-link :to="`/${image.slug}`">
-        <thumbnail :src="`https://loremflickr.com/640/480/${image.slug}`" @loaded="imageLoaded(index)"/>
+        <thumbnail ref="thumbnailWrapper" :src="`https://loremflickr.com/640/480/${image.slug}`" :index="index" :per-page="images.length" @loaded="imageLoaded(index)">
+          View {{image.slug}} gallery
+        </thumbnail>
       </router-link>
     </div>
   </div>
@@ -35,14 +37,10 @@ export default {
         {
           slug: "people",
           loaded: false
-        },
-        {
-          slug: "tech",
-          loaded: false
         }
       ]
     };
-  },
+  }
 };
 </script>
 

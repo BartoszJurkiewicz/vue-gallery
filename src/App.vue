@@ -24,4 +24,14 @@ export default {
 img {
   max-width: 100%;
 }
+@keyframes fadeIn {
+  from {
+    opacity: 0;
+    visibility: hidden;
+  }
+  to {
+    opacity: 1;
+    visibility: visible;
+  }
+}
 </style>
